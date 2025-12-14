@@ -1,141 +1,204 @@
 #include <iostream>
-#include <string>
 using namespace std;
 
-const int MAX = 10;
+const int MAX = 50;
+const int MAX_TOPIK = 10;
 
-struct Antrian
+// ================= STRUCT =================
+struct Mahasiswa
 {
     string nama;
     string topik;
-    int prioritas; // 1 = mendesak, 2 = normal, 3 = santai
+    int prioritas; // 1 = prioritas, 0 = reguler
 };
 
-// Deklarasi fungsi
-void tampilMenu();
-void tambahAntrian(Antrian q[], int &jumlah);
-void panggilAntrian(Antrian q[], int &jumlah);
-void lihatAntrian(Antrian q[], int jumlah);
+struct StatistikDosen
+{
+    int totalMahasiswa;
+    int prioritasCount;
+    int regulerCount;
+};
 
+// ================= GLOBAL =================
+Mahasiswa antrian[MAX];
+int front = 0, rear = 0;
+
+string daftarTopik[MAX_TOPIK];
+int jumlahTopik[MAX_TOPIK];
+int totalTopik = 0;
+
+StatistikDosen stats = {0, 0, 0};
+
+// ================= FUNCTION =================
+void menu();
+void tambahAntrian();
+void panggilMahasiswa();
+void tampilkanAntrian();
+void tampilkanStatistik();
+void catatTopik(string topik);
+
+// ================= MAIN =================
 int main()
 {
-    Antrian queue[MAX];
-    int jumlah = 0;
     int pilihan;
 
     do
     {
-        tampilMenu();
+        menu();
         cout << "Pilih menu: ";
         cin >> pilihan;
         cin.ignore();
 
-        if (pilihan == 1)
+        switch (pilihan)
         {
-            tambahAntrian(queue, jumlah);
+        case 1:
+            tambahAntrian();
+            break;
+        case 2:
+            panggilMahasiswa();
+            break;
+        case 3:
+            tampilkanAntrian();
+            break;
+        case 4:
+            tampilkanStatistik();
+            break;
+        case 0:
+            cout << "Program selesai. Semoga bimbingan lancar.\n";
+            break;
+        default:
+            cout << "Menu tidak valid.\n";
         }
-        else if (pilihan == 2)
-        {
-            panggilAntrian(queue, jumlah);
-        }
-        else if (pilihan == 3)
-        {
-            lihatAntrian(queue, jumlah);
-        }
-        else if (pilihan == 0)
-        {
-            cout << "Program selesai. Semoga bimbingannya lancar.\n";
-        }
-        else
-        {
-            cout << "Pilihan tidak valid.\n";
-        }
-
-        cout << endl;
     } while (pilihan != 0);
 
     return 0;
 }
 
-void tampilMenu()
+// ================= IMPLEMENTATION =================
+void menu()
 {
-    cout << "=== ANTRIAN BIMBINGAN DOSEN (PRIORITAS) ===\n";
-    cout << "1. Tambah antrian\n";
-    cout << "2. Panggil mahasiswa\n";
-    cout << "3. Lihat antrian\n";
+    cout << "\n=== SISTEM ANTRIAN BIMBINGAN DOSEN ===\n";
+    cout << "1. Tambah Antrian Bimbingan\n";
+    cout << "2. Panggil Mahasiswa\n";
+    cout << "3. Tampilkan Antrian\n";
+    cout << "4. Lihat Statistik Bimbingan\n";
     cout << "0. Keluar\n";
 }
 
-void tambahAntrian(Antrian q[], int &jumlah)
+void tambahAntrian()
 {
-    if (jumlah >= MAX)
+    if (rear >= MAX)
     {
         cout << "Antrian penuh.\n";
         return;
     }
 
-    Antrian baru;
-    cout << "Nama mahasiswa : ";
-    getline(cin, baru.nama);
-    cout << "Topik bimbingan: ";
-    getline(cin, baru.topik);
-    cout << "Prioritas (1=mendesak, 2=normal, 3=santai): ";
-    cin >> baru.prioritas;
+    Mahasiswa m;
+    cout << "Nama Mahasiswa: ";
+    getline(cin, m.nama);
+
+    cout << "Topik Bimbingan: ";
+    getline(cin, m.topik);
+
+    cout << "Prioritas? (1 = Ya, 0 = Tidak): ";
+    cin >> m.prioritas;
     cin.ignore();
 
-    if (baru.prioritas < 1 || baru.prioritas > 3)
+    if (m.prioritas == 1)
     {
-        cout << "Prioritas tidak valid.\n";
-        return;
+        // Geser antrian reguler ke belakang
+        int i = rear;
+        while (i > front && antrian[i - 1].prioritas == 0)
+        {
+            antrian[i] = antrian[i - 1];
+            i--;
+        }
+        antrian[i] = m;
+    }
+    else
+    {
+        antrian[rear] = m;
     }
 
-    int i = jumlah - 1;
-    while (i >= 0 && q[i].prioritas > baru.prioritas)
-    {
-        q[i + 1] = q[i];
-        i--;
-    }
-
-    q[i + 1] = baru;
-    jumlah++;
-
+    rear++;
     cout << "Mahasiswa berhasil ditambahkan ke antrian.\n";
 }
 
-void panggilAntrian(Antrian q[], int &jumlah)
+void panggilMahasiswa()
 {
-    if (jumlah == 0)
+    if (front == rear)
     {
         cout << "Antrian kosong.\n";
         return;
     }
 
-    cout << "Memanggil:\n";
-    cout << "Nama  : " << q[0].nama << endl;
-    cout << "Topik : " << q[0].topik << endl;
-    cout << "Prioritas : " << q[0].prioritas << endl;
+    Mahasiswa m = antrian[front];
+    front++;
 
-    for (int i = 0; i < jumlah - 1; i++)
-    {
-        q[i] = q[i + 1];
-    }
-    jumlah--;
+    cout << "\nMemanggil Mahasiswa:\n";
+    cout << "Nama   : " << m.nama << endl;
+    cout << "Topik  : " << m.topik << endl;
+    cout << "Status : " << (m.prioritas ? "Prioritas" : "Reguler") << endl;
+
+    // Statistik
+    stats.totalMahasiswa++;
+    if (m.prioritas)
+        stats.prioritasCount++;
+    else
+        stats.regulerCount++;
+
+    catatTopik(m.topik);
 }
 
-void lihatAntrian(Antrian q[], int jumlah)
+void tampilkanAntrian()
 {
-    if (jumlah == 0)
+    if (front == rear)
     {
         cout << "Antrian kosong.\n";
         return;
     }
 
-    cout << "Daftar Antrian:\n";
-    for (int i = 0; i < jumlah; i++)
+    cout << "\n=== DAFTAR ANTRIAN ===\n";
+    for (int i = front; i < rear; i++)
     {
-        cout << i + 1 << ". "
-             << q[i].nama << " | "
-             << q[i].topik << " | "
-             << "Prioritas: " << q[i].prioritas << endl;
+        cout << i - front + 1 << ". "
+             << antrian[i].nama
+             << " | " << antrian[i].topik
+             << " | " << (antrian[i].prioritas ? "Prioritas" : "Reguler")
+             << endl;
+    }
+}
+
+void tampilkanStatistik()
+{
+    cout << "\n=== STATISTIK BIMBINGAN DOSEN ===\n";
+    cout << "Total Mahasiswa Dibimbing : " << stats.totalMahasiswa << endl;
+    cout << "Mahasiswa Prioritas       : " << stats.prioritasCount << endl;
+    cout << "Mahasiswa Reguler         : " << stats.regulerCount << endl;
+
+    cout << "\nTopik Bimbingan:\n";
+    for (int i = 0; i < totalTopik; i++)
+    {
+        cout << "- " << daftarTopik[i]
+             << " : " << jumlahTopik[i] << endl;
+    }
+}
+
+void catatTopik(string topik)
+{
+    for (int i = 0; i < totalTopik; i++)
+    {
+        if (daftarTopik[i] == topik)
+        {
+            jumlahTopik[i]++;
+            return;
+        }
+    }
+
+    if (totalTopik < MAX_TOPIK)
+    {
+        daftarTopik[totalTopik] = topik;
+        jumlahTopik[totalTopik] = 1;
+        totalTopik++;
     }
 }
