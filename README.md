@@ -2,44 +2,46 @@
 
 # 📚 Sistem Antrian Bimbingan Dosen (C++)
 
-Aplikasi konsol berbasis **C++** yang mensimulasikan **sistem antrian bimbingan dosen** dengan dukungan **prioritas mahasiswa** dan **statistik bimbingan** sederhana.  
-Dikembangkan sebagai latihan penerapan konsep dasar pemrograman untuk mahasiswa **semester 1**.
+**BIMBIDOS** adalah aplikasi konsol berbasis **C++** yang mensimulasikan **sistem antrian (waiting list) bimbingan dosen** dengan dukungan **prioritas mahasiswa**, **estimasi waktu tunggu**, dan **statistik bimbingan sederhana**.  
+Aplikasi ini dikembangkan sebagai media latihan penerapan konsep dasar pemrograman untuk mahasiswa **semester 1**.
 
-> Fokus utama: logika program jelas, struktur rapi, dan kompleksitas tetap masuk akal.
+> Fokus utama pengembangan: logika program jelas, struktur kode rapi, dan kompleksitas tetap proporsional dengan level pembelajaran.
 
 ---
 
 ## 🎯 Tujuan Pengembangan
 
-Aplikasi ini dibuat untuk:
+Aplikasi ini bertujuan untuk:
 
-- Mensimulasikan proses antrian bimbingan dosen
+- Mensimulasikan proses antrian bimbingan dosen secara sederhana
 - Melatih pemahaman konsep dasar pemrograman C++
-- Membiasakan penulisan kode yang terstruktur sejak awal
-- Menunjukkan kemampuan analisis sederhana melalui statistik
+- Membiasakan penulisan kode yang terstruktur dan modular
+- Mengembangkan kemampuan analisis data sederhana melalui statistik
 
 ---
 
 ## 🧠 Konsep yang Digunakan
 
-Aplikasi menerapkan konsep **antrian (queue)** dengan prinsip **FIFO (First In First Out)**, dengan penyesuaian:
+Aplikasi menerapkan konsep **antrian (queue)** dengan prinsip **FIFO (First In First Out)**, dengan beberapa penyesuaian kontekstual:
 
-- Mahasiswa **prioritas** didahulukan
-- Mahasiswa **reguler** mengikuti urutan masuk
-- Statistik dihitung selama program berjalan
+- Mahasiswa dengan status **prioritas** didahulukan
+- Mahasiswa **reguler** mengikuti urutan kedatangan
+- Statistik bimbingan dihitung selama program berjalan
+- Estimasi waktu tunggu ditampilkan berdasarkan posisi antrian
 
-> Semua fitur diimplementasikan **tanpa library lanjutan** untuk menjaga scope pembelajaran.
+> Seluruh fitur diimplementasikan **tanpa library lanjutan** untuk menjaga ruang lingkup tetap sesuai dengan tujuan pembelajaran.
 
 ---
 
 ## ✨ Fitur Utama
 
-- ➕ Menambahkan mahasiswa ke antrian bimbingan
-- ⚡ Sistem prioritas (prioritas & reguler)
+- ➕ Menambahkan mahasiswa ke dalam antrian bimbingan
+- ⚡ Sistem prioritas mahasiswa (prioritas & reguler)
 - 📢 Pemanggilan mahasiswa sesuai urutan antrian
 - 📋 Menampilkan daftar antrian aktif
+- ⏱️ Estimasi waktu tunggu berdasarkan posisi antrian
 - 📊 Statistik bimbingan dosen:
-  - Total mahasiswa dibimbing
+  - Total mahasiswa yang telah dibimbing
   - Jumlah mahasiswa prioritas dan reguler
   - Distribusi topik bimbingan
 - 🚪 Keluar dari program dengan aman
@@ -57,7 +59,7 @@ Aplikasi menerapkan konsep **antrian (queue)** dengan prinsip **FIFO (First In F
 | Array       | Penyimpanan antrian & statistik         |
 | Struct      | Representasi data mahasiswa & statistik |
 
-> Catatan: Program **tidak menggunakan `vector`, `queue`, `map`, atau file I/O** secara sengaja.
+> Catatan: Program **tidak menggunakan `vector`, `queue`, `map`, maupun file I/O** secara sengaja untuk memperkuat pemahaman konsep dasar.
 
 ---
 
@@ -75,13 +77,14 @@ struct StatistikDosen {
     int prioritasCount;
     int regulerCount;
 };
-```
+````
 
 ---
 
 ## ▶️ Cara Menjalankan Program
 
-1. Pastikan compiler C++ terpasang (misalnya `g++`)
+1. Pastikan compiler C++ telah terpasang (misalnya `g++`)
+
 2. Compile program:
 
    ```bash
@@ -98,12 +101,12 @@ struct StatistikDosen {
 
 ## 📸 Alur Singkat Program
 
-1. User memilih menu
+1. Pengguna memilih menu
 2. Mahasiswa ditambahkan ke antrian
-3. Sistem mengatur urutan berdasarkan prioritas
+3. Sistem mengatur urutan antrian berdasarkan prioritas
 4. Mahasiswa dipanggil satu per satu
-5. Statistik bimbingan diperbarui otomatis
-6. User dapat melihat statistik kapan saja
+5. Statistik bimbingan diperbarui secara otomatis
+6. Pengguna dapat melihat statistik kapan saja
 
 ---
 
@@ -111,22 +114,23 @@ struct StatistikDosen {
 
 Statistik yang ditampilkan meliputi:
 
-- Total mahasiswa yang telah dibimbing
-- Jumlah mahasiswa prioritas dan reguler
-- Jumlah bimbingan per topik
+* Total mahasiswa yang telah dibimbing
+* Jumlah mahasiswa prioritas dan reguler
+* Jumlah bimbingan per topik
+* Topik bimbingan yang paling sering muncul
 
-> Statistik ini membantu memberikan **insight sederhana** terhadap proses bimbingan tanpa kompleksitas berlebih.
+> Statistik ini memberikan **insight sederhana** terhadap pola bimbingan tanpa menambah kompleksitas sistem.
 
 ---
 
 ## 🚧 Batasan Program
 
-- Data tidak disimpan permanen
-- Statistik hanya berlaku selama program berjalan
-- Tidak ada sistem multi-dosen
-- Tidak ada visualisasi grafik
+* Data tidak disimpan secara permanen
+* Statistik hanya berlaku selama program berjalan
+* Sistem hanya mendukung satu dosen
+* Tidak terdapat visualisasi grafik
 
-> Batasan ini dibuat **secara sadar** agar program tetap sesuai level mahasiswa semester awal.
+> Batasan ini ditetapkan secara sadar agar aplikasi tetap sesuai dengan level mahasiswa semester awal.
 
 ---
 
@@ -141,7 +145,7 @@ Statistik yang ditampilkan meliputi:
 | xx.xx.xxxx |      |
 | xx.xx.xxxx |      |
 
-**Program Studi** : _Sistem Informasi_
+**Program Studi** : Sistem Informasi
 
 > Proyek ini dibuat untuk keperluan akademik dan pembelajaran.
-> Kode sederhana, tapi ditulis dengan niat.
+> Kode sederhana, tetapi dirancang dan dikembangkan dengan pertimbangan logika yang matang.
