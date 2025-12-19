@@ -148,6 +148,7 @@ void panggilMahasiswa()
         stats.regulerCount++;
 
     catatTopik(m.topik);
+    resetAntrianJikaKosong();
 }
 
 void tampilkanAntrian()
@@ -200,5 +201,13 @@ void catatTopik(string topik)
         daftarTopik[totalTopik] = topik;
         jumlahTopik[totalTopik] = 1;
         totalTopik++;
+    }
+}
+
+void resetAntrianJikaKosong()
+{
+    if (front == rear)
+    {
+        front = rear = 0;
     }
 }
