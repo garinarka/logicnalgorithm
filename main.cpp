@@ -36,6 +36,7 @@ void panggilMahasiswa();
 void tampilkanAntrian();
 void tampilkanStatistik();
 void catatTopik(string topik);
+void resetAntrianJikaKosong();
 
 // ================= MAIN =================
 int main()
