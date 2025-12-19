@@ -160,13 +160,18 @@ void tampilkanAntrian()
         return;
     }
 
+    int waktuPerMahasiswa = 15;
+
     cout << "\n=== DAFTAR ANTRIAN ===\n";
     for (int i = front; i < rear; i++)
     {
-        cout << i - front + 1 << ". "
+        int posisi = i - front;
+        cout << posisi + 1 << ". "
              << antrian[i].nama
              << " | " << antrian[i].topik
              << " | " << (antrian[i].prioritas ? "Prioritas" : "Reguler")
+             << " | Estimasi Tunggu: "
+             << posisi * waktuPerMahasiswa << " menit"
              << endl;
     }
 }
