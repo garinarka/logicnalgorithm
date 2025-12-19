@@ -37,6 +37,7 @@ void tampilkanAntrian();
 void tampilkanStatistik();
 void catatTopik(string topik);
 void resetAntrianJikaKosong();
+void tampilkanTopikTerbanyak();
 
 // ================= MAIN =================
 int main()
@@ -189,6 +190,8 @@ void tampilkanStatistik()
         cout << "- " << daftarTopik[i]
              << " : " << jumlahTopik[i] << endl;
     }
+
+    tampilkanTopikTerbanyak();
 }
 
 void catatTopik(string topik)
@@ -216,4 +219,23 @@ void resetAntrianJikaKosong()
     {
         front = rear = 0;
     }
+}
+
+void tampilkanTopikTerbanyak()
+{
+    if (totalTopik == 0)
+        return;
+
+    int maxIndex = 0;
+    for (int i = 1; i < totalTopik; i++)
+    {
+        if (jumlahTopik[i] > jumlahTopik[maxIndex])
+        {
+            maxIndex = i;
+        }
+    }
+
+    cout << "\nTopik Paling Sering Dibimbing:\n";
+    cout << daftarTopik[maxIndex]
+         << " (" << jumlahTopik[maxIndex] << " mahasiswa)\n";
 }
